@@ -32,7 +32,7 @@ export default async function BlogPage() {
             </h1>
           </div>
           <p className="mt-4 max-w-3xl text-base leading-relaxed text-[var(--muted)]">
-            Notes, essays, and engineering logs collected from my Notion workspace.
+            前路漫漫亦灿灿,往事堪堪亦澜澜
           </p>
         </header>
 
