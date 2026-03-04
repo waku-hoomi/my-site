@@ -14,17 +14,19 @@ function RichText({ richText }: { richText?: NotionRichText[] }) {
       {richText.map((text, index) => {
         const annotations = text.annotations || {};
         const href = text.text?.link?.url || text.href;
-        let className = "";
+        const classes = [
+          annotations.bold ? "font-semibold" : "",
+          annotations.italic ? "italic" : "",
+          annotations.strikethrough ? "line-through" : "",
+          annotations.underline ? "underline" : "",
+          annotations.code
+            ? "rounded border border-[var(--rule)] bg-[rgba(19,19,19,0.06)] px-1 py-0.5 font-mono text-[0.92em]"
+            : "",
+        ]
+          .filter(Boolean)
+          .join(" ");
 
-        if (annotations.bold) className += " font-semibold";
-        if (annotations.italic) className += " italic";
-        if (annotations.strikethrough) className += " line-through";
-        if (annotations.underline) className += " underline";
-        if (annotations.code) className += " font-mono text-sm bg-gray-100 px-1 py-0.5 rounded";
-
-        const content = (
-          <span className={className.trim() || undefined}>{text.plain_text}</span>
-        );
+        const content = <span className={classes || undefined}>{text.plain_text}</span>;
 
         if (!href) {
           return <span key={index}>{content}</span>;
@@ -36,7 +38,7 @@ function RichText({ richText }: { richText?: NotionRichText[] }) {
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 hover:text-blue-800 underline"
+            className="accent-link"
           >
             {content}
           </a>
@@ -50,35 +52,35 @@ function renderBlock(block: NotionBlock) {
   switch (block.type) {
     case "paragraph":
       return (
-        <p className="leading-7 text-gray-800">
+        <p className="max-w-[72ch] text-[1.03rem] leading-relaxed text-[var(--foreground)]">
           <RichText richText={block.paragraph?.rich_text} />
         </p>
       );
 
     case "heading_1":
       return (
-        <h1 className="text-3xl font-bold mt-10 mb-4 text-gray-900">
+        <h1 className="editorial-title mt-12 text-4xl leading-tight text-[var(--foreground)] md:text-5xl">
           <RichText richText={block.heading_1?.rich_text} />
         </h1>
       );
 
     case "heading_2":
       return (
-        <h2 className="text-2xl font-semibold mt-8 mb-3 text-gray-900">
+        <h2 className="editorial-title mt-10 text-3xl leading-tight text-[var(--foreground)] md:text-4xl">
           <RichText richText={block.heading_2?.rich_text} />
         </h2>
       );
 
     case "heading_3":
       return (
-        <h3 className="text-xl font-semibold mt-6 mb-2 text-gray-900">
+        <h3 className="editorial-title mt-8 text-2xl leading-tight text-[var(--foreground)] md:text-3xl">
           <RichText richText={block.heading_3?.rich_text} />
         </h3>
       );
 
     case "bulleted_list_item":
       return (
-        <ul className="list-disc list-inside text-gray-800">
+        <ul className="max-w-[70ch] list-disc space-y-1 pl-6 text-[1.03rem] leading-relaxed marker:text-[var(--accent-dark)]">
           <li>
             <RichText richText={block.bulleted_list_item?.rich_text} />
           </li>
@@ -87,7 +89,7 @@ function renderBlock(block: NotionBlock) {
 
     case "numbered_list_item":
       return (
-        <ol className="list-decimal list-inside text-gray-800">
+        <ol className="max-w-[70ch] list-decimal space-y-1 pl-6 text-[1.03rem] leading-relaxed marker:text-[var(--accent-dark)]">
           <li>
             <RichText richText={block.numbered_list_item?.rich_text} />
           </li>
@@ -96,7 +98,7 @@ function renderBlock(block: NotionBlock) {
 
     case "quote":
       return (
-        <blockquote className="border-l-4 border-gray-300 pl-4 italic text-gray-700 my-4">
+        <blockquote className="max-w-[72ch] border-l-4 border-[var(--accent-dark)] bg-[rgba(236,72,153,0.05)] px-4 py-3 text-[1.05rem] italic leading-relaxed text-[var(--foreground)]">
           <RichText richText={block.quote?.rich_text} />
         </blockquote>
       );
@@ -104,14 +106,14 @@ function renderBlock(block: NotionBlock) {
     case "code": {
       const codeText = block.code?.rich_text?.map((t: NotionRichText) => t.plain_text).join("") || "";
       return (
-        <pre className="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm my-4">
+        <pre className="max-w-full overflow-x-auto border border-[var(--rule)] bg-[#161616] p-4 text-sm leading-relaxed text-[#f7f2e8]">
           <code>{codeText}</code>
         </pre>
       );
     }
 
     case "divider":
-      return <hr className="my-8 border-gray-200" />;
+      return <hr className="my-9 border-[var(--rule)]" />;
 
     case "image": {
       const imageUrl = block.image?.external?.url || block.image?.file?.url;
@@ -120,10 +122,10 @@ function renderBlock(block: NotionBlock) {
       if (!imageUrl) return null;
 
       return (
-        <figure className="my-6">
-          <img src={imageUrl} alt="Notion image" className="w-full rounded-lg border border-gray-200" />
+        <figure className="my-8">
+          <img src={imageUrl} alt="Notion image" className="w-full border border-[var(--rule)] object-cover" />
           {Array.isArray(caption) && caption.length > 0 && (
-            <figcaption className="mt-2 text-sm text-gray-500">
+            <figcaption className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
               <RichText richText={caption} />
             </figcaption>
           )}
@@ -133,10 +135,10 @@ function renderBlock(block: NotionBlock) {
 
     case "callout":
       return (
-        <div className="my-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-gray-800">
+        <div className="my-6 border border-[var(--accent)] bg-[rgba(236,72,153,0.08)] px-4 py-3 text-[var(--foreground)]">
           <div className="flex items-start gap-2">
-            {block.callout?.icon?.emoji && <span>{block.callout.icon.emoji}</span>}
-            <div>
+            {block.callout?.icon?.emoji && <span aria-hidden="true">{block.callout.icon.emoji}</span>}
+            <div className="leading-relaxed">
               <RichText richText={block.callout?.rich_text} />
             </div>
           </div>

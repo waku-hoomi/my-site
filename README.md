@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Personal Website (Next.js + Notion)
 
-## Getting Started
+这是一个基于 **Next.js App Router** 的个人网站：
+- `/` 首页：个人介绍
+- `/blog`：展示 Notion 父页面正文 + 子数据库文章列表
+- `/blog/[id]`：站内文章详情页（正文来自 Notion blocks）
 
-First, run the development server:
+---
 
+## 给人看的版本（Human Guide）
+
+## 1) 本地运行
+
+### 前置条件
+- Node.js `>= 20`
+- npm `>= 10`
+- 一个可用的 Notion Integration（需要 `NOTION_API_KEY`）
+- 一个 Notion 父页面 ID（需要 `NOTION_PAGE_ID`）
+
+### 安装依赖
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 配置环境变量
+在项目根目录创建 `.env.local`：
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```env
+NOTION_API_KEY=your_notion_integration_secret
+NOTION_PAGE_ID=your_parent_notion_page_id
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 启动开发环境
+```bash
+npm run dev
+```
+打开：`http://localhost:3000`
 
-## Learn More
+### 构建与生产运行
+```bash
+npm run build
+npm run start
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 2) 你通常要改哪些信息
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| 目标 | 文件 | 说明 |
+|---|---|---|
+| 首页标题、简介、按钮链接 | `app/page.tsx` | 改个人名称、简介、GitHub 链接 |
+| 站点 metadata（标题/描述） | `app/layout.tsx` | 改浏览器标题和 SEO 描述 |
+| 全局视觉风格（颜色、字体、间距） | `app/globals.css` | 改主题变量和通用样式 |
+| 博客页文案与布局 | `app/blog/page.tsx` | 改列表页标题、副标题、卡片样式 |
+| 博客详情页文案与布局 | `app/blog/[id]/page.tsx` | 改返回文案、详情页视觉 |
+| Notion 字段映射逻辑 | `lib/notion.ts` | 如果你 Notion 数据库字段名不同，在这里改映射 |
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 3) Notion 侧需要准备什么
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. 创建 Notion Integration，拿到 `NOTION_API_KEY`。
+2. 把父页面分享给这个 Integration。
+3. 父页面下放一个 `child_database`（当前逻辑读取第一个子数据库）。
+4. 数据库推荐字段：
+   - 标题：`名称`（title）
+   - 标签：`标签`（multi_select）
+   - 封面：Notion page cover（可选）
+   - icon：Notion page icon（可选）
+
+> 当前代码有回退逻辑：
+> - 标题缺失会回退到第一个 `type=title` 属性
+> - 标签缺失会回退为空数组
+
+---
+
+## 4) 配上什么可以直接上线（Vercel）
+
+你至少需要：
+- GitHub 仓库
+- Vercel 账号
+- Notion Integration（含上面两个环境变量）
+
+部署步骤：
+1. 把代码推到 GitHub。
+2. 在 Vercel 导入该仓库。
+3. 在 Vercel Project Settings -> Environment Variables 配置：
+   - `NOTION_API_KEY`
+   - `NOTION_PAGE_ID`
+4. 点击 Deploy。
+5. （可选）绑定自定义域名。
+
+### 内容更新说明
+- `/blog` 列表页是构建期产物；Notion 新增文章后，通常需要重新部署以更新列表。
+- `/blog/[id]` 为按需服务端渲染路由。
+
+---
+
+## 5) 给 AI 的快速版本
+
+请看：[`README.ai.md`](./README.ai.md)
+
+这个文件是专门为 AI/自动化代理准备的极简上下文。

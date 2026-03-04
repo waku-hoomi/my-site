@@ -10,7 +10,7 @@ function PageIcon({ icon, title }: { icon: string; title: string }) {
   const isUrl = icon.startsWith("http://") || icon.startsWith("https://");
 
   if (isUrl) {
-    return <img src={icon} alt={`${title} icon`} className="w-8 h-8 rounded" />;
+    return <img src={icon} alt={`${title} icon`} className="h-8 w-8 rounded border border-[var(--rule)] object-cover" />;
   }
 
   return <span className="text-2xl">{icon}</span>;
@@ -21,81 +21,93 @@ export default async function BlogPage() {
   const hasPageId = Boolean(process.env.NOTION_PAGE_ID);
 
   return (
-    <div className="max-w-4xl mx-auto py-20 px-6">
-      <section className="mb-14">
-        {parentPage ? (
-          <div className="flex items-center gap-3 mb-4">
-            <PageIcon icon={parentPage.icon} title={parentPage.title} />
-            <h1 className="text-4xl font-bold">{parentPage.title}</h1>
+    <div className="editorial-shell">
+      <div className="editorial-panel px-6 py-8 md:px-10 md:py-10">
+        <header className="border-b border-[var(--rule)] pb-6">
+          <p className="editorial-kicker mb-3">Journal Archive</p>
+          <div className="flex flex-wrap items-center gap-3">
+            {parentPage && <PageIcon icon={parentPage.icon} title={parentPage.title} />}
+            <h1 className="editorial-title text-4xl leading-tight md:text-6xl">
+              {parentPage?.title || "My Journey"}
+            </h1>
           </div>
-        ) : (
-          <h1 className="text-4xl font-bold mb-4">My Journey</h1>
-        )}
+          <p className="mt-4 max-w-3xl text-base leading-relaxed text-[var(--muted)]">
+            Notes, essays, and engineering logs collected from my Notion workspace.
+          </p>
+        </header>
 
-        {!hasPageId ? (
-          <p className="text-gray-500">请先配置环境变量 NOTION_PAGE_ID。</p>
-        ) : parentBlocks.length > 0 ? (
-          <div className="mt-6 border border-gray-200 rounded-lg p-6 bg-white">
-            <NotionBlocks blocks={parentBlocks} />
-          </div>
-        ) : (
-          <p className="text-gray-500 mt-2">暂无正文内容。</p>
-        )}
-      </section>
-
-      <section>
-        <h2 className="text-2xl font-semibold mb-6">文章列表</h2>
-
-        {posts.length === 0 ? (
-          <p className="text-gray-500">暂无文章</p>
-        ) : (
-          <div className="grid gap-6">
-            {posts.map((post) => (
-              <div
-                key={post.id}
-                className="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow bg-white"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <PageIcon icon={post.icon} title={post.title} />
-                      <h3 className="text-2xl font-semibold">{post.title}</h3>
-                    </div>
-
-                    {post.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-3">
-                        {post.tags.map((tag, index) => (
-                          <span
-                            key={`${post.id}-${tag.name}-${index}`}
-                            className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
-                          >
-                            {tag.name}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    <Link
-                      href={`/blog/${encodeURIComponent(post.id)}`}
-                      className="inline-block mt-4 text-blue-600 hover:text-blue-800"
-                    >
-                      阅读更多 →
-                    </Link>
-                  </div>
-
-                  {post.cover && (
-                    <img
-                      src={post.cover}
-                      alt={post.title}
-                      className="w-24 h-24 object-cover rounded-lg ml-4"
-                    />
-                  )}
-                </div>
+        <section className="mt-8 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+          <article className="min-w-0">
+            {!hasPageId ? (
+              <p className="border border-dashed border-[var(--rule)] bg-[var(--surface)] p-5 text-base text-[var(--muted)]">
+                请先配置环境变量 NOTION_PAGE_ID。
+              </p>
+            ) : parentBlocks.length > 0 ? (
+              <div className="editorial-panel border-none bg-transparent shadow-none">
+                <NotionBlocks blocks={parentBlocks} />
               </div>
-            ))}
-          </div>
-        )}
-      </section>
+            ) : (
+              <p className="border border-dashed border-[var(--rule)] bg-[var(--surface)] p-5 text-base text-[var(--muted)]">
+                暂无正文内容。
+              </p>
+            )}
+          </article>
+
+          <aside className="border-l border-[var(--rule)] pl-0 lg:pl-6">
+            <div className="flex items-end justify-between border-b border-[var(--rule)] pb-3">
+              <h2 className="editorial-title text-2xl md:text-3xl">Articles</h2>
+              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
+                {posts.length} posts
+              </span>
+            </div>
+
+            {posts.length === 0 ? (
+              <p className="mt-4 text-base text-[var(--muted)]">暂无文章</p>
+            ) : (
+              <div className="mt-5 grid gap-4">
+                {posts.map((post) => (
+                  <div
+                    key={post.id}
+                    className="card-hover border border-[var(--rule)] bg-[var(--surface)] p-4"
+                  >
+                    <div className="flex items-start gap-3">
+                      <PageIcon icon={post.icon} title={post.title} />
+                      <div className="min-w-0 flex-1">
+                        <h3 className="editorial-title text-2xl leading-tight">{post.title}</h3>
+                        {post.tags.length > 0 && (
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            {post.tags.map((tag, index) => (
+                              <span
+                                key={`${post.id}-${tag.name}-${index}`}
+                                className="border border-[var(--rule)] px-2 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]"
+                              >
+                                {tag.name}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        <Link
+                          href={`/blog/${encodeURIComponent(post.id)}`}
+                          className="accent-link mt-4 inline-block cursor-pointer text-sm font-semibold uppercase tracking-[0.14em]"
+                        >
+                          Read article
+                        </Link>
+                      </div>
+                    </div>
+                    {post.cover && (
+                      <img
+                        src={post.cover}
+                        alt={post.title}
+                        className="mt-4 h-40 w-full border border-[var(--rule)] object-cover"
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </aside>
+        </section>
+      </div>
     </div>
   );
 }

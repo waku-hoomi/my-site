@@ -1,26 +1,103 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4ede1;
+  --surface: #fffaf0;
+  --foreground: #131313;
+  --muted: #625f58;
+  --accent: #ec4899;
+  --accent-dark: #be185d;
+  --rule: #d5ccbb;
+  --paper-shadow: 0 20px 40px -24px rgba(19, 19, 19, 0.38);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-body);
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
+  margin: 0;
+  background:
+    radial-gradient(circle at top right, rgba(236, 72, 153, 0.1), transparent 40%),
+    radial-gradient(circle at bottom left, rgba(190, 24, 93, 0.08), transparent 35%),
+    var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), "Times New Roman", serif;
+}
+
+a {
+  color: inherit;
+}
+
+.editorial-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 1.25rem 4rem;
+}
+
+.editorial-panel {
+  background: linear-gradient(180deg, rgba(255, 250, 240, 0.98), rgba(255, 249, 236, 0.94));
+  border: 1px solid var(--rule);
+  box-shadow: var(--paper-shadow);
+}
+
+.editorial-kicker {
+  font-family: var(--font-body), serif;
+  letter-spacing: 0.22em;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+}
+
+.editorial-title {
+  font-family: var(--font-heading), Georgia, serif;
+  letter-spacing: 0.02em;
+}
+
+.accent-link {
+  color: var(--accent-dark);
+  text-underline-offset: 4px;
+  transition: color 180ms ease;
+}
+
+.accent-link:hover {
+  color: var(--accent);
+}
+
+.card-hover {
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 20px 36px -26px rgba(236, 72, 153, 0.65);
+}
+
+.grain-overlay {
+  position: relative;
+}
+
+.grain-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.04) 0.35px, transparent 0.35px);
+  background-size: 3px 3px;
+  opacity: 0.45;
+}
+
+@media (max-width: 768px) {
+  .editorial-shell {
+    padding: 2rem 1rem 3rem;
+  }
 }
