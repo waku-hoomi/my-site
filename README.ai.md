@@ -51,7 +51,37 @@ npm run start
 3. Deploy.
 4. Re-deploy after new Notion posts if `/blog` list must refresh.
 
-## 7) Guardrails for edits
+## 7) Music player assets (vinyl)
+- Global floating player component: `app/_components/vinyl-player.tsx`
+- Mounted in: `app/layout.tsx`
+- Static assets root: `public/music/`
+  - playlist: `public/music/playlist.json`
+  - audio files: `public/music/tracks/*`
+  - cover files (optional): `public/music/covers/*`
+
+`playlist.json` schema (fixed):
+```json
+{
+  "version": 1,
+  "tracks": [
+    {
+      "id": "city-night",
+      "title": "City Night",
+      "artist": "Armin",
+      "src": "/music/tracks/city-night.mp3",
+      "cover": "/music/covers/city-night.jpg"
+    }
+  ]
+}
+```
+
+Quick add-track flow:
+1. Put audio file into `public/music/tracks/`
+2. (Optional) put cover into `public/music/covers/`
+3. Append one track object in `public/music/playlist.json`
+4. No extra music env vars needed on Vercel
+
+## 8) Guardrails for edits
 - Keep Notion behavior working:
   - `/blog` must show parent content + posts
   - post links must stay in-site (`/blog/[id]`)

@@ -96,7 +96,60 @@ npm run start
 
 ---
 
-## 5) 给 AI 的快速版本
+## 5) 音乐播放器（黑胶唱片）
+
+播放器是全站固定悬浮组件（首页、`/blog`、`/blog/[id]` 都可见），音乐资源从 `public/music` 读取，不需要额外环境变量。
+
+### 目录结构
+
+```text
+public/
+  music/
+    playlist.json
+    tracks/
+      your-track.mp3
+    covers/
+      your-cover.jpg
+```
+
+### `playlist.json` 固定格式
+
+```json
+{
+  "version": 1,
+  "tracks": [
+    {
+      "id": "city-night",
+      "title": "City Night",
+      "artist": "Armin",
+      "src": "/music/tracks/city-night.mp3",
+      "cover": "/music/covers/city-night.jpg"
+    }
+  ]
+}
+```
+
+字段说明：
+- `id`：曲目唯一标识
+- `title`：歌曲名
+- `artist`：歌手名
+- `src`：音频静态路径（必须放在 `public/music/tracks`）
+- `cover`：封面静态路径（可选，建议放在 `public/music/covers`）
+
+### 新增歌曲最短步骤
+
+1. 把音频文件放到 `public/music/tracks/`。
+2. （可选）把封面放到 `public/music/covers/`。
+3. 在 `public/music/playlist.json` 的 `tracks` 里追加一个对象。
+4. 启动 `npm run dev` 检查播放/切歌。
+
+### 部署说明（Vercel）
+
+播放器只依赖 `public/` 静态资源，部署到 Vercel 后无需新增音乐相关环境变量。
+
+---
+
+## 6) 给 AI 的快速版本
 
 请看：[`README.ai.md`](./README.ai.md)
 

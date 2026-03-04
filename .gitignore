@@ -24,6 +24,11 @@
 .DS_Store
 *.pem
 
+# local tools and cache
+/ui-ux-pro-max-skill/
+/npm-cache/
+/.claude/settings.local.json
+
 # debug
 npm-debug.log*
 yarn-debug.log*

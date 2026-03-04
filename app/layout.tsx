@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Libre_Bodoni, Public_Sans } from "next/font/google";
+import VinylPlayer from "./_components/vinyl-player";
 import "./globals.css";
 
 const headingFont = Libre_Bodoni({
@@ -26,7 +27,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${headingFont.variable} ${bodyFont.variable} antialiased`}>{children}</body>
+      <body className={`${headingFont.variable} ${bodyFont.variable} antialiased`}>
+        {children}
+        <VinylPlayer />
+      </body>
     </html>
   );
 }
