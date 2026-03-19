@@ -9,8 +9,8 @@
   --accent-dark: #be185d;
   --rule: #d5ccbb;
   --paper-shadow: 0 20px 40px -24px rgba(19, 19, 19, 0.38);
-  --font-body: "Moon Earth", "AR DCXiangJiaoRen 1", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
-  --font-heading: "Moon Earth", "AR DCXiangJiaoRen 1", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+  --font-body: "Comic Sans MS", "Chalkboard SE", "AR DCXiangJiaoRen 1", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+  --font-heading: "Comic Sans MS", "Chalkboard SE", "AR DCXiangJiaoRen 1", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
 }
 
 @theme inline {
@@ -46,9 +46,15 @@ a {
 }
 
 .editorial-panel {
-  background: linear-gradient(180deg, rgba(255, 250, 240, 0.98), rgba(255, 249, 236, 0.94));
   border: 1px solid var(--rule);
+  background: linear-gradient(180deg, rgba(255, 250, 240, 0.98), rgba(255, 249, 236, 0.94));
   box-shadow: var(--paper-shadow);
+}
+
+.editorial-panel-no-border {
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 .editorial-kicker {

@@ -22,7 +22,7 @@ export default async function BlogPage() {
 
   return (
     <div className="editorial-shell">
-      <div className="editorial-panel px-6 py-8 md:px-10 md:py-10">
+      <div className="editorial-panel editorial-panel-no-border px-6 py-8 md:px-10 md:py-10">
         <header className="border-b border-[var(--rule)] pb-6">
           <p className="editorial-kicker mb-3">Journal Archive</p>
           <div className="flex flex-wrap items-center gap-3">
@@ -47,7 +47,7 @@ export default async function BlogPage() {
                 <NotionBlocks blocks={parentBlocks} />
               </div>
             ) : (
-              <p className="bg-[var(--surface)] p-5 text-base text-[var(--muted)]">
+              <p className="border border-dashed border-[var(--rule)] bg-[var(--surface)] p-5 text-base text-[var(--muted)]">
                 暂无正文内容。
               </p>
             )}
