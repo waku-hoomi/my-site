@@ -9,6 +9,8 @@
   --accent-dark: #be185d;
   --rule: #d5ccbb;
   --paper-shadow: 0 20px 40px -24px rgba(19, 19, 19, 0.38);
+  --font-body: "Moon Earth", "AR DCXiangJiaoRen 1", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+  --font-heading: "Moon Earth", "AR DCXiangJiaoRen 1", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
 }
 
 @theme inline {

@@ -47,7 +47,7 @@ export default async function BlogPage() {
                 <NotionBlocks blocks={parentBlocks} />
               </div>
             ) : (
-              <p className="border border-dashed border-[var(--rule)] bg-[var(--surface)] p-5 text-base text-[var(--muted)]">
+              <p className="bg-[var(--surface)] p-5 text-base text-[var(--muted)]">
                 暂无正文内容。
               </p>
             )}
