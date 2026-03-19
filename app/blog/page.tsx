@@ -39,15 +39,15 @@ export default async function BlogPage() {
         <section className="mt-8 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <article className="min-w-0">
             {!hasPageId ? (
-              <p className="border border-dashed border-[var(--rule)] bg-[var(--surface)] p-5 text-base text-[var(--muted)]">
+              <p className="text-base text-[var(--muted)]">
                 请先配置环境变量 NOTION_PAGE_ID。
               </p>
             ) : parentBlocks.length > 0 ? (
-              <div className="editorial-panel border-none bg-transparent shadow-none">
+              <div className="editorial-panel-no-border">
                 <NotionBlocks blocks={parentBlocks} />
               </div>
             ) : (
-              <p className="border border-dashed border-[var(--rule)] bg-[var(--surface)] p-5 text-base text-[var(--muted)]">
+              <p className="text-base text-[var(--muted)]">
                 暂无正文内容。
               </p>
             )}
